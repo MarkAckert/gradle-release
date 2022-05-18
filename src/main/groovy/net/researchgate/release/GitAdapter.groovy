@@ -30,6 +30,7 @@ class GitAdapter extends BaseScmAdapter {
         String requireBranch = 'master'
         def pushToRemote = 'origin' // needs to be def as can be boolean or string
         def pushOptions = []
+        def commitOptions = []
         boolean signTag = false
         
         /** @deprecated Remove in version 3.0 */
@@ -128,7 +129,7 @@ class GitAdapter extends BaseScmAdapter {
             command << '-a'
         }
 
-        exec(command, directory: workingDirectory, errorPatterns: ['error: ', 'fatal: '])
+        exec(command + extension.git.commitOptions, directory: workingDirectory, errorPatterns: ['error: ', 'fatal: '])
 
         if (shouldPush()) {
             def branch = gitCurrentBranch()
